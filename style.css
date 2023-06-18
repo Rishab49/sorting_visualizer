@@ -1,0 +1,66 @@
+*{
+    margin:0;
+    padding:0;
+    font-family: "Chilanka",sans-serif;
+}
+
+:root{
+    color-scheme: dark;
+}
+body{
+    height: 100vh;
+    width:100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:1rem;
+    flex-direction: column;
+}
+.graph_container{
+    height:400px;
+    position:relative;
+    padding:1rem;
+    border:2px solid white;
+    transition: all 0.5s ease-in-out;
+}
+
+.container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width:25px;
+    transition:all 0.4s ease;
+    height:95%;
+    background-color:#1c1b22;
+}
+.button_container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:1rem;
+    padding:1rem;
+}
+button{
+    padding:0.75rem 1rem;
+}
+.legend{
+height:fit-content;
+}
+.bar{
+    position: relative;
+    width:100%;
+    background-color:#a18eff;
+}
+p{
+    background-color: #1c1b22;
+}
+
+.key::after{
+
+    position: absolute;
+    content: "key";
+    top:-2rem;
+
+
+}
