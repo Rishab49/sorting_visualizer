@@ -1,11 +1,11 @@
-import { changeColor, elementAtIndex, resolveTemp } from "./helper.js";
+import { changeColor, elementAtIndex, resolveTemp, swap } from "./helper.js";
 
 let graph_container = document.querySelector(".graph_container");
-let array;
-let mainInterval;
-let numberOfElements = 20;
 let insertionButton = document.querySelector("#insertionButton");
+let bubbleButton = document.querySelector("#bubbleButton");
 let randomButton = document.querySelector("#randomButton");
+
+
 function drawBars() {
 
     console.log(array);
@@ -67,6 +67,44 @@ function insertionSort() {
 
 }
 
+function bubbleSort(){
+    console.log("starting bubble sort");
+    let i = 0;
+    let j = 0;
+    let swapped = false;
+    mainInterval = setInterval(() => {
+
+        [...graph_container.children].forEach(e => { 
+            e.children[0].style.backgroundColor = "#a18eff";
+        });
+        if(i < array.length - 1){
+            if(j < array.length - i - 1){
+                if(array[j] > array[j+1]){
+                    console.log(i,j,array);
+                    swap(j,j+1);
+                    swapped = true;
+                }
+                j++;
+            }else{
+                if(swapped == false){
+                    console.log("no swap : clearing interval");
+                    clearInterval(mainInterval);
+                }
+                i++;
+                j = 0;
+                swapped = false;
+            }
+
+        }else{
+            console.log("loop end : clearing interval");
+            clearInterval(mainInterval);
+        }
+
+    },300);
+
+
+}
+
 function randomArray(length) {
     graph_container.style.width = `${numberOfElements * 30}px`;
     clearInterval(mainInterval);
@@ -81,3 +119,4 @@ function randomArray(length) {
 
 randomButton.addEventListener("click",() => randomArray(numberOfElements));
 insertionButton.addEventListener("click",() => insertionSort());
+bubbleButton.addEventListener("click",() => bubbleSort());
