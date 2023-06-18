@@ -4,6 +4,7 @@ let graph_container = document.querySelector(".graph_container");
 let insertionButton = document.querySelector("#insertionButton");
 let bubbleButton = document.querySelector("#bubbleButton");
 let randomButton = document.querySelector("#randomButton");
+let selectionButton = document.querySelector("#selectionButton");
 
 
 function drawBars() {
@@ -105,6 +106,51 @@ function bubbleSort(){
 
 }
 
+function selectionSort(){
+
+    let i = 0;
+    let j = i+1;
+    let min_indx = i;
+
+    mainInterval = setInterval(() => {
+
+        console.log(i,j,array);
+        [...graph_container.children].forEach(e => { 
+            e.children[0].style.backgroundColor = "#a18eff"; 
+            e.children[0].classList.remove("key") 
+        });
+        if(i < array.length - 1){
+            elementAtIndex(i).children[0].style.backgroundColor = "#fffd8e";
+            elementAtIndex(i).children[0].classList.add("key");
+            if(j < array.length){
+                elementAtIndex(j).children[0].style.backgroundColor = "#f93c3c";
+                if(array[j] < array[min_indx]){
+                    min_indx = j;
+                }
+                j++;
+
+            }else{
+                if(min_indx != i){
+                    swap(i,min_indx);
+                }
+                i++;
+                j = i+1;
+                min_indx = i;
+            }
+        }else{
+            clearInterval(mainInterval);
+        }
+
+
+    },100);
+
+}
+
+
+
+
+
+
 function randomArray(length) {
     graph_container.style.width = `${numberOfElements * 30}px`;
     clearInterval(mainInterval);
@@ -120,3 +166,4 @@ function randomArray(length) {
 randomButton.addEventListener("click",() => randomArray(numberOfElements));
 insertionButton.addEventListener("click",() => insertionSort());
 bubbleButton.addEventListener("click",() => bubbleSort());
+selectionButton.addEventListener("click",() => selectionSort());
