@@ -15,11 +15,10 @@ body {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  flex-direction: column;
 }
 
 .graph_container {
-  height: 400px;
+  height: 300px;
   position: relative;
   padding: 1rem;
   border: 2px solid white;
@@ -33,7 +32,8 @@ body {
   justify-content: flex-end;
   width: 25px;
   transition: all 0.4s ease;
-  height: 95%;
+  /* height: 95%; */
+  height:300px;
   background-color: #1c1b22;
 }
 
@@ -43,6 +43,7 @@ body {
   justify-content: flex-start;
   gap: 1rem;
   padding: 1rem;
+  flex-direction: column;
 }
 
 button {
@@ -79,4 +80,8 @@ p {
   position: absolute;
   content: "end";
   top: -2rem;
+}
+
+button{
+  width:150px;
 }
