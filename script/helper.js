@@ -23,6 +23,22 @@ function swap(j, i) {
   array[j] = array[i];
   array[i] = temp;
 }
+
+
+function verticalSwap(i,j){
+  const firstElem = elementAtIndex(j);
+  const secondElem = elementAtIndex(i);
+  firstElem.children[0].style.backgroundColor = "#fffd8e";
+  secondElem.children[0].style.backgroundColor = "#fffd8e";
+  firstElem.style.transform = `translateY(400px) translateX(${i * 30}px)`;
+  secondElem.style.transform = `translateY(400px) translateX(${j * 30}px)`;
+  firstElem.dataset.pos = i;
+  secondElem.dataset.pos = j;
+  let temp = array[j];
+  array[j] = array[i];
+  array[i] = temp;
+}
+
 function addClass(item, className) {
   if (typeof item == "number") {
     elementAtIndex(item).children[0].classList.add(className);
@@ -45,4 +61,5 @@ export {
   swap,
   addClass,
   removeClass,
+  verticalSwap
 };

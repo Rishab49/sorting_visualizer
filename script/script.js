@@ -13,6 +13,7 @@ let bubbleButton = document.querySelector("#bubbleButton");
 let randomButton = document.querySelector("#randomButton");
 let selectionButton = document.querySelector("#selectionButton");
 let quickButton = document.querySelector("#quickButton");
+let mergeButton = document.querySelector("#mergeButton");
 
 function drawBars() {
   console.log(array);
@@ -178,8 +179,8 @@ async function quickSort(left, right) {
     await quickSort(pi + 1, right);
     await new Promise((res) => {
       [...graph_container.children].forEach((e, index) => {
-        removeClass(index,"start");
-        removeClass(index,"end");
+        removeClass(index, "start");
+        removeClass(index, "end");
         changeColor(index, "#a18eff");
       });
       res("done");
@@ -188,8 +189,140 @@ async function quickSort(left, right) {
   }
 }
 
+async function merge(left, mid, right) {
+
+
+
+  [...graph_container.children].forEach((e, index) => {
+    index >= left && index <= right
+      ? changeColor(index, "#a18eff")
+      : changeColor(index, "#242424");
+  });
+
+  var n1 = mid - left + 1;
+  var n2 = right - mid;
+
+  var L = new Array(n1);
+  var R = new Array(n2);
+
+  for (var i = 0; i < n1; i++) L[i] = array[left + i];
+  for (var j = 0; j < n2; j++) R[j] = array[mid + 1 + j];
+
+  var i = 0;
+
+  var j = 0;
+
+  var k = left;
+
+  i = 0;
+  j = 0;
+  await new Promise((res) => {
+    mainInterval = setInterval(() => {
+      [...graph_container.children].forEach((e, index) => {
+        index >= left && index <= right
+          ? changeColor(index, "#a18eff")
+          : changeColor(index, "#242424");
+      });
+      console.log("main loop", i, j, array);
+      if (i < n1 && j < n2) {
+        if (L[i] < R[j]) {
+          array[k] = L[i];
+          console.log("i :", i);
+          changeColor(left + i, "#fffd8e");
+          elementAtIndex(
+            left + i
+          ).style.transform = `translateY(300px) translateX(${k * 30}px)`;
+          elementAtIndex(left + i).dataset.temp = k;
+          i++;
+        } else {
+          array[k] = R[j];
+          console.log("j :", j);
+          changeColor(mid + 1 + j, "#fffd8e");
+          elementAtIndex(
+            mid + 1 + j
+          ).style.transform = `translateY(300px) translateX(${k * 30}px)`;
+          elementAtIndex(mid + 1 + j).dataset.temp = k;
+          j++;
+        }
+
+        k++;
+      } else {
+        clearInterval(mainInterval);
+        res("done");
+      }
+    }, 400);
+  });
+
+  await new Promise((res) => {
+    mainInterval = setInterval(() => {
+      [...graph_container.children].forEach((e, index) => {
+        index >= left && index <= right
+          ? changeColor(index, "#a18eff")
+          : changeColor(index, "#242424");
+      });
+      console.log("left loop", i, j, array);
+      if (i < n1) {
+        console.log("i:", elementAtIndex(i));
+        array[k] = L[i];
+        changeColor(left + i, "#fffd8e");
+        elementAtIndex(
+          left + i
+        ).style.transform = `translateY(300px) translateX(${k * 30}px)`;
+        elementAtIndex(left + i).dataset.temp = k;
+        i++;
+        k++;
+      } else {
+        clearInterval(mainInterval);
+        res("done");
+      }
+    }, 400);
+  });
+
+  await new Promise((res) => {
+    mainInterval = setInterval(() => {
+      [...graph_container.children].forEach((e, index) => {
+        index >= left && index <= right
+          ? changeColor(index, "#a18eff")
+          : changeColor(index, "#242424");
+      });
+      console.log("right loop", i, j, array);
+      if (j < n2) {
+        console.log("j:", elementAtIndex(j));
+        array[k] = R[j];
+        changeColor(mid + 1 + j, "#fffd8e");
+        elementAtIndex(
+          mid + 1 + j
+        ).style.transform = `translateY(300px) translateX(${k * 30}px)`;
+        elementAtIndex(mid + 1 + j).dataset.temp = k;
+        j++;
+        k++;
+      } else {
+        clearInterval(mainInterval);
+        res("done");
+      }
+    }, 400);
+  });
+  resolveTemp();
+   [...graph_container.children].forEach((_, index) => {
+        changeColor(index, "#a18eff");
+      });
+}
+async function mergeSort(left, right) {
+  console.log(left, right);
+  if (left < right) {
+    await new Promise(async (res) => {
+      let m = Math.floor((left + right) / 2);
+      await mergeSort(left, m);
+      await mergeSort(m + 1, right);
+      await merge(left, m, right);
+      res("done");
+    });
+  }
+}
+
 function randomArray(length) {
   graph_container.style.width = `${numberOfElements * 30}px`;
+  graph_container.style.height = `300px`;
   clearInterval(mainInterval);
   [...graph_container.children].forEach((e) => {
     graph_container.removeChild(e);
@@ -204,3 +337,11 @@ insertionButton.addEventListener("click", () => insertionSort());
 bubbleButton.addEventListener("click", () => bubbleSort());
 selectionButton.addEventListener("click", () => selectionSort());
 quickButton.addEventListener("click", () => quickSort(0, array.length - 1));
+mergeButton.addEventListener("click", async () => {
+  graph_container.style.height = "600px";
+  await mergeSort(0, array.length - 1);
+  [...graph_container.children].forEach(e => {
+    e.style.transform = `translateX(${e.dataset.pos * 30}px)`;
+  })
+  graph_container.style.height = "300px";
+});
