@@ -15,8 +15,8 @@ function swap(j, i) {
   const secondElem = elementAtIndex(i);
   firstElem.children[0].style.backgroundColor = "#fffd8e";
   secondElem.children[0].style.backgroundColor = "#fffd8e";
-  firstElem.style.transform = `translateX(${i * 30}px)`;
-  secondElem.style.transform = `translateX(${j * 30}px)`;
+  firstElem.style.transform = `translateX(${i * factor}px)`;
+  secondElem.style.transform = `translateX(${j * factor}px)`;
   firstElem.dataset.pos = i;
   secondElem.dataset.pos = j;
   let temp = array[j];
@@ -30,8 +30,8 @@ function verticalSwap(i,j){
   const secondElem = elementAtIndex(i);
   firstElem.children[0].style.backgroundColor = "#fffd8e";
   secondElem.children[0].style.backgroundColor = "#fffd8e";
-  firstElem.style.transform = `translateY(400px) translateX(${i * 30}px)`;
-  secondElem.style.transform = `translateY(400px) translateX(${j * 30}px)`;
+  firstElem.style.transform = `translateY(400px) translateX(${i * factor}px)`;
+  secondElem.style.transform = `translateY(400px) translateX(${j * factor}px)`;
   firstElem.dataset.pos = i;
   secondElem.dataset.pos = j;
   let temp = array[j];
@@ -54,6 +54,23 @@ function removeClass(item, className) {
   }
 }
 
+function notifySuccess(){
+  notificationElement.classList.add("slideIn");
+  setTimeout(() =>  notificationElement.classList.remove("slideIn"),1000);
+}
+
+function closeMenu(){
+  menu.style.right = "-250px";
+  toggleButton.style.right = "0";
+  isOpen = false;
+}
+function openMenu(){
+  menu.style.right = "250px";
+  toggleButton.style.right = "250px";
+  isOpen = true;
+}
+
+
 export {
   changeColor,
   elementAtIndex,
@@ -61,5 +78,8 @@ export {
   swap,
   addClass,
   removeClass,
-  verticalSwap
+  verticalSwap,
+  notifySuccess,
+  openMenu,
+  closeMenu
 };

@@ -1,19 +1,21 @@
 import {
   addClass,
   changeColor,
+  closeMenu,
   elementAtIndex,
+  notifySuccess,
+  openMenu,
   removeClass,
   resolveTemp,
   swap,
 } from "./helper.js";
 
-let graph_container = document.querySelector(".graph_container");
-let insertionButton = document.querySelector("#insertionButton");
-let bubbleButton = document.querySelector("#bubbleButton");
-let randomButton = document.querySelector("#randomButton");
-let selectionButton = document.querySelector("#selectionButton");
-let quickButton = document.querySelector("#quickButton");
-let mergeButton = document.querySelector("#mergeButton");
+let observer = new ResizeObserver(() => {
+  factor = graph_container.getBoundingClientRect().width / 21;
+  console.log(factor);
+});
+
+observer.observe(document.body);
 
 function drawBars() {
   console.log(array);
@@ -22,7 +24,7 @@ function drawBars() {
     let bar = document.createElement("div");
     let legend = document.createElement("p");
     container.setAttribute("class", "container");
-    container.style.transform = `translateX(${index * 30}px)`;
+    container.style.transform = `translateX(${index * factor}px)`;
     container.dataset.pos = index;
     container.dataset.temp = index;
     bar.setAttribute("class", "bar");
@@ -49,7 +51,7 @@ function insertionSort() {
         changeColor(j, "#fffd8e");
         changeColor(i, "#f93c3c");
         addClass(i, "key");
-        elementAtIndex(j).style.transform = `translateX(${(j + 1) * 30}px)`;
+        elementAtIndex(j).style.transform = `translateX(${(j + 1) * factor}px)`;
         elementAtIndex(j).dataset.temp = j + 1;
         array[j + 1] = array[j];
         console.log(i, j, array);
@@ -57,7 +59,7 @@ function insertionSort() {
       } else {
         addClass(i, "key");
         changeColor(i, "#fffd8e");
-        elementAtIndex(i).style.transform = `translateX(${(j + 1) * 30}px)`;
+        elementAtIndex(i).style.transform = `translateX(${(j + 1) * factor}px)`;
         elementAtIndex(i).dataset.temp = j + 1;
         console.log(i, j, array);
         resolveTemp();
@@ -67,6 +69,7 @@ function insertionSort() {
         key = array[i];
       }
     } else {
+      notifySuccess();
       clearInterval(mainInterval);
     }
   }, 500);
@@ -91,6 +94,7 @@ function bubbleSort() {
         j++;
       } else {
         if (swapped == false) {
+          notifySuccess();
           console.log("no swap : clearing interval");
           clearInterval(mainInterval);
         }
@@ -99,6 +103,7 @@ function bubbleSort() {
         swapped = false;
       }
     } else {
+      notifySuccess();
       console.log("loop end : clearing interval");
       clearInterval(mainInterval);
     }
@@ -134,9 +139,10 @@ function selectionSort() {
         min_indx = i;
       }
     } else {
+      notifySuccess();
       clearInterval(mainInterval);
     }
-  }, 100);
+  }, 300);
 }
 
 function partition(start, end) {
@@ -169,7 +175,7 @@ function partition(start, end) {
         clearInterval(mainInterval);
         res(i + 1);
       }
-    }, 400);
+    }, 100);
   });
 }
 async function quickSort(left, right) {
@@ -185,14 +191,10 @@ async function quickSort(left, right) {
       });
       res("done");
     });
-  } else {
   }
 }
 
 async function merge(left, mid, right) {
-
-
-
   [...graph_container.children].forEach((e, index) => {
     index >= left && index <= right
       ? changeColor(index, "#a18eff")
@@ -231,7 +233,7 @@ async function merge(left, mid, right) {
           changeColor(left + i, "#fffd8e");
           elementAtIndex(
             left + i
-          ).style.transform = `translateY(300px) translateX(${k * 30}px)`;
+          ).style.transform = `translateY(40vh) translateX(${k * factor}px)`;
           elementAtIndex(left + i).dataset.temp = k;
           i++;
         } else {
@@ -240,7 +242,7 @@ async function merge(left, mid, right) {
           changeColor(mid + 1 + j, "#fffd8e");
           elementAtIndex(
             mid + 1 + j
-          ).style.transform = `translateY(300px) translateX(${k * 30}px)`;
+          ).style.transform = `translateY(40vh) translateX(${k * factor}px)`;
           elementAtIndex(mid + 1 + j).dataset.temp = k;
           j++;
         }
@@ -250,7 +252,7 @@ async function merge(left, mid, right) {
         clearInterval(mainInterval);
         res("done");
       }
-    }, 400);
+    }, 100);
   });
 
   await new Promise((res) => {
@@ -267,7 +269,7 @@ async function merge(left, mid, right) {
         changeColor(left + i, "#fffd8e");
         elementAtIndex(
           left + i
-        ).style.transform = `translateY(300px) translateX(${k * 30}px)`;
+        ).style.transform = `translateY(40vh) translateX(${k * factor}px)`;
         elementAtIndex(left + i).dataset.temp = k;
         i++;
         k++;
@@ -275,7 +277,7 @@ async function merge(left, mid, right) {
         clearInterval(mainInterval);
         res("done");
       }
-    }, 400);
+    }, 100);
   });
 
   await new Promise((res) => {
@@ -292,7 +294,7 @@ async function merge(left, mid, right) {
         changeColor(mid + 1 + j, "#fffd8e");
         elementAtIndex(
           mid + 1 + j
-        ).style.transform = `translateY(300px) translateX(${k * 30}px)`;
+        ).style.transform = `translateY(40vh) translateX(${k * factor}px)`;
         elementAtIndex(mid + 1 + j).dataset.temp = k;
         j++;
         k++;
@@ -300,12 +302,12 @@ async function merge(left, mid, right) {
         clearInterval(mainInterval);
         res("done");
       }
-    }, 400);
+    }, 100);
   });
   resolveTemp();
-   [...graph_container.children].forEach((_, index) => {
-        changeColor(index, "#a18eff");
-      });
+  [...graph_container.children].forEach((_, index) => {
+    changeColor(index, "#a18eff");
+  });
 }
 async function mergeSort(left, right) {
   console.log(left, right);
@@ -321,8 +323,8 @@ async function mergeSort(left, right) {
 }
 
 function randomArray(length) {
-  graph_container.style.width = `${numberOfElements * 30}px`;
-  graph_container.style.height = `300px`;
+  // graph_container.style.width = `${numberOfElements * 30}px`;
+  // graph_container.style.height = `300px`;
   clearInterval(mainInterval);
   [...graph_container.children].forEach((e) => {
     graph_container.removeChild(e);
@@ -332,16 +334,42 @@ function randomArray(length) {
   drawBars();
 }
 
-randomButton.addEventListener("click", () => randomArray(numberOfElements));
-insertionButton.addEventListener("click", () => insertionSort());
-bubbleButton.addEventListener("click", () => bubbleSort());
-selectionButton.addEventListener("click", () => selectionSort());
-quickButton.addEventListener("click", () => quickSort(0, array.length - 1));
-mergeButton.addEventListener("click", async () => {
-  graph_container.style.height = "600px";
-  await mergeSort(0, array.length - 1);
-  [...graph_container.children].forEach(e => {
-    e.style.transform = `translateX(${e.dataset.pos * 30}px)`;
-  })
-  graph_container.style.height = "300px";
+toggleButton.addEventListener("click", () => {
+  if (isOpen) {
+    closeMenu();
+  } else {
+    openMenu();
+  }
+});
+
+randomButton.addEventListener("click", () => {
+  randomArray(numberOfElements);
+});
+runButton.addEventListener("click", async () => {
+  let algo = new FormData(form).get("algo");
+
+  switch (algo) {
+    case "insertion":
+      insertionSort();
+      break;
+    case "bubble":
+      bubbleSort();
+      break;
+    case "selection":
+      selectionSort();
+      break;
+    case "quick":
+      await quickSort(0, array.length - 1);
+      notifySuccess();
+      break;
+    case "merge":
+      graph_container.style.transform = "translateY(-100px)";
+      await mergeSort(0, array.length - 1);
+      [...graph_container.children].forEach((e) => {
+        e.style.transform = `translateX(${e.dataset.pos * factor}px)`;
+      });
+      notifySuccess();
+      graph_container.style.transform = "translateY(0px)";
+      break;
+  }
 });

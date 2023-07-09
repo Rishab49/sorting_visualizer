@@ -1,7 +1,8 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: "Chilanka", sans-serif;
+  box-sizing: border-box;
+  font-family: "Satoshi", sans-serif;
 }
 
 :root {
@@ -9,20 +10,34 @@
 }
 
 body {
+  position: relative;
   height: 100vh;
   width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  overflow-x:hidden ;
 }
-
+main {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 100vh auto;
+  place-items: center;
+  height: 100vh;
+  overflow-y: scroll;
+}
 .graph_container {
-  height: 300px;
+  aspect-ratio: 2/1;
+  height: auto;
+  width: 50vw;
   position: relative;
   padding: 1rem;
   border: 2px solid white;
   transition: all 0.5s ease-in-out;
+}
+
+.desc_container{
+  padding:1rem;
 }
 
 .container {
@@ -30,24 +45,39 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  width: 25px;
+  width: 4%;
   transition: all 0.4s ease;
-  /* height: 95%; */
-  height:300px;
+  height: 90%;
   background-color: #1c1b22;
 }
 
-.button_container {
+.menu {
+  height: 100vh;
+  width: 250px;
   display: flex;
-  align-items: center;
   justify-content: flex-start;
   gap: 1rem;
   padding: 1rem;
   flex-direction: column;
+  border-left: 1px solid white;
+  background-color: #1c1b22;
 }
 
 button {
   padding: 0.75rem 1rem;
+  width: 100%;
+}
+fieldset {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  align-items: flex-start;
+}
+
+label{
+  display:flex;
+  flex-direction: row-reverse;
+  gap:1rem;
 }
 
 .legend {
@@ -82,6 +112,65 @@ p {
   top: -2rem;
 }
 
-button{
-  width:150px;
+.notification {
+  position: absolute;
+  top: -25vh;
+  padding: 1rem;
+  background-color: lightgreen;
+  color: black;
+  border-radius: 5px;
+}
+
+.toggle{
+  position: absolute;
+  height:45px;
+  width:45px;
+  padding:0.5rem;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  top:0;
+  right:0;
+}
+
+
+
+.slideIn {
+  animation: slideIn 1s ease;
+}
+
+@keyframes slideIn {
+  0% {
+    top: -25vh;
+  }
+  30% {
+    top: 25vh;
+  }
+
+  70% {
+    top: 25vh;
+  }
+  100% {
+    top: -25vh;
+  }
+}
+
+@media (max-width: 768px) {
+  main{
+    flex:auto;
+    width:100vw;
+  }
+  .menu {
+    position: absolute;
+    right: 0;
+    transform: translateX(250px);
+  }
+  .graph_container {
+    width:90vw;
+    padding:0.75rem;
+  }
+  .toggle{
+    display: flex;
+  }
 }
