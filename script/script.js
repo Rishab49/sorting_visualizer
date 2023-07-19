@@ -8,6 +8,7 @@ import {
   removeClass,
   resolveTemp,
   swap,
+  setDesc,
 } from "./helper.js";
 
 let observer = new ResizeObserver(() => {
@@ -40,6 +41,7 @@ function insertionSort() {
   let i = 1;
   let key = array[i];
   let j = i - 1;
+  setDesc("insertion");
   mainInterval = setInterval(() => {
     [...graph_container.children].forEach((e) => {
       e.children[0].style.backgroundColor = "#a18eff";
@@ -80,6 +82,7 @@ function bubbleSort() {
   let i = 0;
   let j = 0;
   let swapped = false;
+  setDesc("bubble");
   mainInterval = setInterval(() => {
     [...graph_container.children].forEach((e) => {
       e.children[0].style.backgroundColor = "#a18eff";
@@ -114,7 +117,7 @@ function selectionSort() {
   let i = 0;
   let j = i + 1;
   let min_indx = i;
-
+  setDesc("selection");
   mainInterval = setInterval(() => {
     console.log(i, j, array);
     [...graph_container.children].forEach((e) => {
@@ -359,10 +362,12 @@ runButton.addEventListener("click", async () => {
       selectionSort();
       break;
     case "quick":
+      setDesc("quick");
       await quickSort(0, array.length - 1);
       notifySuccess();
       break;
     case "merge":
+      setDesc("merge");
       graph_container.style.transform = "translateY(-100px)";
       await mergeSort(0, array.length - 1);
       [...graph_container.children].forEach((e) => {
