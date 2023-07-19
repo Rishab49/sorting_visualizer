@@ -8,7 +8,9 @@
 :root {
   color-scheme: dark;
 }
-
+html{
+  overflow-x: hidden;
+}
 body {
   position: relative;
   height: 100vh;
