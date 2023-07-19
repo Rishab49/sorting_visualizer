@@ -24,8 +24,7 @@ function swap(j, i) {
   array[i] = temp;
 }
 
-
-function verticalSwap(i,j){
+function verticalSwap(i, j) {
   const firstElem = elementAtIndex(j);
   const secondElem = elementAtIndex(i);
   firstElem.children[0].style.backgroundColor = "#fffd8e";
@@ -54,22 +53,27 @@ function removeClass(item, className) {
   }
 }
 
-function notifySuccess(){
+function notifySuccess() {
   notificationElement.classList.add("slideIn");
-  setTimeout(() =>  notificationElement.classList.remove("slideIn"),1000);
+  setTimeout(() => notificationElement.classList.remove("slideIn"), 1000);
 }
 
-function closeMenu(){
+function closeMenu() {
   menu.style.right = "-250px";
   toggleButton.style.right = "0";
   isOpen = false;
 }
-function openMenu(){
+function openMenu() {
   menu.style.right = "250px";
   toggleButton.style.right = "250px";
   isOpen = true;
 }
-
+function setDesc(type) {
+  desc_container.querySelector("h1").innerText = algo_meta_data[type].name;
+  desc_container.querySelector("p").innerText = algo_meta_data[type].data;
+  desc_container.querySelector(".time").innerText = `time : ${algo_meta_data[type].time}`;
+  desc_container.querySelector(".space").innerText = `space : ${algo_meta_data[type].space}`;
+}
 
 export {
   changeColor,
@@ -81,5 +85,6 @@ export {
   verticalSwap,
   notifySuccess,
   openMenu,
-  closeMenu
+  closeMenu,
+  setDesc
 };
