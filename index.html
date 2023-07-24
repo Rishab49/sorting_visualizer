@@ -11,25 +11,49 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./style.css" />
-    <script src="./script/main.js" defer></script>
-    <script src="./script/script.js" type="module"></script>
+    <script src="./script/script.js" defer></script>
+    <script src="./script/event.js" type="module"></script>
   </head>
-  <body>
+  <body class="dark">
+
+    <!--main section-->
+
     <main>
       <div class="graph_container"></div>
       <div class="desc_container">
         <h1></h1>
-        <p></p>
+        <p>
+          <!--
+            Selection sort is a sorting algorithm that works by repeatedly finding the minimum
+            element in the unsorted portion of the array and swapping it with the first unsorted 
+            element. The algorithm starts at the beginning of the array and finds the minimum 
+            element. The minimum element is then swapped with the first element in the array. The 
+            algorithm then moves on to the next element in the array and repeats the process. This 
+            continues until the entire array is sorted.
+            
+            The time complexity of selection sort depends on the order of the elements in the 
+            array. In the best case, the array is already sorted, so the algorithm only needs to 
+            scan the entire array once. This gives a time complexity of O(n). In the worst case, 
+            the array is in reverse order, so the algorithm needs to compare each element to every 
+            other element in the array.
+    
+          -->
+        </p>
         <div class="time_and_space">
           <p class="time"></p>
           <p class="space"></p>
         </div>
       </div>
     </main>
+
+    <!-- menu division-->
+
     <div class="menu">
       <h2>MENU</h2>
       <hr />
-      <button type="button" id="randomButton">Randomize array</button>
+      <button type="button" id="randomButton">
+        Randomize array
+      </button>
       <form>
         <fieldset>
           <legend>Select Algorithm</legend>
@@ -39,7 +63,7 @@
           </label>
           <label>
             Bubble Sort
-            <input type="radio" value="bubble" name="algo"/>
+            <input type="radio" value="bubble" name="algo" />
           </label>
           <label>
             Selection Sort
@@ -51,16 +75,48 @@
           </label>
           <label>
             Merge Sort
-            <input type="radio" value="merge"  name="algo"/>
+            <input type="radio" value="merge" name="algo" />
           </label>
         </fieldset>
       </form>
-      <button type="button" class="run_button">Run Algorithm</button>
+      <fieldset>
+        <legend>
+          Interval Time
+        </legend>
+        <input
+          type="number"
+          min="100"
+          max="1000"
+          step="100"
+          class="interval"
+          value="100"
+        />
+      </fieldset>
+      <button type="button" class="run_button">
+        Run Algorithm
+      </button>
       <hr />
+      <fieldset>
+        <legend>
+          Theme toggle
+        </legend>
+        <label class="switch">
+          <input type="checkbox" checked class="theme_button" />
+          <span class="slider round"></span>
+        </label>
+      </fieldset>
     </div>
-    <div class="notification">Sorting Completed</div>
+
+    <!-- notification element-->
+
+    <div class="notification">
+      Sorting Completed
+    </div>
+
+    <!-- menu toggle -->
+
     <div class="toggle">
-      <img src="./chevron-left.svg">
+      <img src="./chevron-left.svg" />
     </div>
   </body>
 </html>
