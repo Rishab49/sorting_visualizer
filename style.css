@@ -43,13 +43,20 @@ p {
 
 /* graph and graph elements */
 
+.light .graph_container{
+  border: 2px solid black;
+}
+
+.dark .graph_container{
+  border: 2px solid white;
+}
+
 .graph_container {
   aspect-ratio: 2/1;
   height: auto;
   width: 50vw;
   position: relative;
   padding: 1rem;
-  border: 2px solid white;
   transition: all 0.5s ease-in-out;
 }
 
