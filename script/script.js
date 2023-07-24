@@ -8,7 +8,7 @@ let factor;
 let isDark = true;
 let isSorted = true;
 
-
+// elements references
 let graph_container = document.querySelector(".graph_container");
 let randomButton = document.querySelector("#randomButton");
 let runButton = document.querySelector(".run_button");
@@ -20,6 +20,8 @@ let desc_container = document.querySelector(".desc_container");
 let interval_element = document.querySelector(".interval");
 let theme_button = document.querySelector(".theme_button");
 factor = graph_container.getBoundingClientRect().width / 21;
+
+// data about each algo
 let algo_meta_data = {
   insertion: {
     name: "Insertion Sort",
