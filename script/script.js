@@ -1,380 +1,64 @@
-import {
-  addClass,
-  changeColor,
-  closeMenu,
-  elementAtIndex,
-  notifySuccess,
-  openMenu,
-  removeClass,
-  resolveTemp,
-  swap,
-  setDesc,
-} from "./helper.js";
+// Global Variables
+let array;
+let mainInterval;
+let numberOfElements = 20;
+let isOpen = false;
+let interval = 100;
+let factor;
+let isDark = true;
+let isSorted = true;
 
-let observer = new ResizeObserver(() => {
-  factor = graph_container.getBoundingClientRect().width / 21;
-  console.log(factor);
-});
 
-observer.observe(document.body);
+let graph_container = document.querySelector(".graph_container");
+let randomButton = document.querySelector("#randomButton");
+let runButton = document.querySelector(".run_button");
+let form = document.querySelector("form");
+let notificationElement = document.querySelector(".notification");
+let toggleButton = document.querySelector(".toggle");
+let menu = document.querySelector(".menu");
+let desc_container = document.querySelector(".desc_container");
+let interval_element = document.querySelector(".interval");
+let theme_button = document.querySelector(".theme_button");
+factor = graph_container.getBoundingClientRect().width / 21;
+let algo_meta_data = {
+  insertion: {
+    name: "Insertion Sort",
+    data: `Insertion sort is a simple sorting algorithm that works by repeatedly inserting the next element into the correct position in the already sorted part of the array. The algorithm starts with the first element in the array and compares it to the element before it. If the first element is smaller than the element before it, then the two elements are swapped. The algorithm then continues to the next element in the array and repeats the process.
 
-function drawBars() {
-  console.log(array);
-  array.forEach((e, index) => {
-    let container = document.createElement("div");
-    let bar = document.createElement("div");
-    let legend = document.createElement("p");
-    container.setAttribute("class", "container");
-    container.style.transform = `translateX(${index * factor}px)`;
-    container.dataset.pos = index;
-    container.dataset.temp = index;
-    bar.setAttribute("class", "bar");
-    bar.style.height = `${e}%`;
-    legend.innerText = e;
-    container.appendChild(bar);
-    container.appendChild(legend);
-    graph_container.appendChild(container);
-  });
-}
+        The time complexity of insertion sort depends on the order of the elements in the array. In the best case, the array is already sorted, so the algorithm only needs to scan the entire array once. This gives a time complexity of O(n). In the worst case, the array is in reverse order, so the algorithm needs to compare each element to every other element in the array.`,
+    time: "O(n^2)",
+    space: "O(1)",
+  },
+  bubble: {
+    name: "Bubble Sort",
+    data: `Bubble sort is a simple sorting algorithm that works by repeatedly comparing adjacent elements in an array and swapping them if they are in the wrong order. The algorithm starts at the beginning of the array and compares the first two elements. If the first element is greater than the second element, then the two elements are swapped. The algorithm then moves on to the next two elements and repeats the process. This continues until the end of the array is reached.
 
-function insertionSort() {
-  let i = 1;
-  let key = array[i];
-  let j = i - 1;
-  setDesc("insertion");
-  mainInterval = setInterval(() => {
-    [...graph_container.children].forEach((e) => {
-      e.children[0].style.backgroundColor = "#a18eff";
-      removeClass(e, "key");
-    });
+    The time complexity of bubble sort depends on the order of the elements in the array. In the best case, the array is already sorted, so the algorithm only needs to scan the entire array once. This gives a time complexity of O(n). In the worst case, the array is in reverse order, so the algorithm needs to compare each element to every other element in the array. `,
+    time: "O(n^2)",
+    space: "O(1)",
+  },
+  selection: {
+    name: "Selection Sort",
+    data: `Selection sort is a sorting algorithm that works by repeatedly finding the minimum element in the unsorted portion of the array and swapping it with the first unsorted element. The algorithm starts at the beginning of the array and finds the minimum element. The minimum element is then swapped with the first element in the array. The algorithm then moves on to the next element in the array and repeats the process. This continues until the entire array is sorted.
+    
+    The time complexity of selection sort depends on the order of the elements in the array. In the best case, the array is already sorted, so the algorithm only needs to scan the entire array once. This gives a time complexity of O(n). In the worst case, the array is in reverse order, so the algorithm needs to compare each element to every other element in the array.`,
+    time: "O(n^2)",
+    space: "O(1)",
+  },
+  quick: {
+    name: "Quick Sort",
+    data: `Quick sort is a divide-and-conquer sorting algorithm that works by repeatedly partitioning the array around a pivot element. The pivot element is chosen randomly or using some other heuristic. The algorithm then recursively sorts the smaller and larger subarrays around the pivot element.
+    
+    The time complexity of quick sort depends on the order of the elements in the array and the way the pivot element is chosen. In the best case, the pivot element is chosen such that the array is always split into two equal-sized subarrays. This gives a time complexity of O(n log n). In the worst case, the pivot element is always the smallest or largest element in the array. `,
+    time: "O(n^2)",
+    space: "O(log n)",
+  },
+  merge: {
+    name: "Merge Sort",
+    data: `Merge sort is a divide-and-conquer sorting algorithm that works by recursively splitting the array in half and then merging the sorted halves back together. The algorithm starts by splitting the array in half. It then recursively sorts the two halves and then merges the sorted halves back together.
 
-    if (i < array.length) {
-      if (j >= 0 && array[j] > key) {
-        changeColor(j, "#fffd8e");
-        changeColor(i, "#f93c3c");
-        addClass(i, "key");
-        elementAtIndex(j).style.transform = `translateX(${(j + 1) * factor}px)`;
-        elementAtIndex(j).dataset.temp = j + 1;
-        array[j + 1] = array[j];
-        console.log(i, j, array);
-        j--;
-      } else {
-        addClass(i, "key");
-        changeColor(i, "#fffd8e");
-        elementAtIndex(i).style.transform = `translateX(${(j + 1) * factor}px)`;
-        elementAtIndex(i).dataset.temp = j + 1;
-        console.log(i, j, array);
-        resolveTemp();
-        array[j + 1] = key;
-        i++;
-        j = i - 1;
-        key = array[i];
-      }
-    } else {
-      notifySuccess();
-      clearInterval(mainInterval);
-    }
-  }, 500);
-}
-
-function bubbleSort() {
-  console.log("starting bubble sort");
-  let i = 0;
-  let j = 0;
-  let swapped = false;
-  setDesc("bubble");
-  mainInterval = setInterval(() => {
-    [...graph_container.children].forEach((e) => {
-      e.children[0].style.backgroundColor = "#a18eff";
-    });
-    if (i < array.length - 1) {
-      if (j < array.length - i - 1) {
-        if (array[j] > array[j + 1]) {
-          console.log(i, j, array);
-          swap(j, j + 1);
-          swapped = true;
-        }
-        j++;
-      } else {
-        if (swapped == false) {
-          notifySuccess();
-          console.log("no swap : clearing interval");
-          clearInterval(mainInterval);
-        }
-        i++;
-        j = 0;
-        swapped = false;
-      }
-    } else {
-      notifySuccess();
-      console.log("loop end : clearing interval");
-      clearInterval(mainInterval);
-    }
-  }, 300);
-}
-
-function selectionSort() {
-  let i = 0;
-  let j = i + 1;
-  let min_indx = i;
-  setDesc("selection");
-  mainInterval = setInterval(() => {
-    console.log(i, j, array);
-    [...graph_container.children].forEach((e) => {
-      e.children[0].style.backgroundColor = "#a18eff";
-      removeClass(e, "key");
-    });
-    if (i < array.length - 1) {
-      elementAtIndex(i).children[0].style.backgroundColor = "#fffd8e";
-      addClass(i, "key");
-      if (j < array.length) {
-        elementAtIndex(j).children[0].style.backgroundColor = "#f93c3c";
-        if (array[j] < array[min_indx]) {
-          min_indx = j;
-        }
-        j++;
-      } else {
-        if (min_indx != i) {
-          swap(i, min_indx);
-        }
-        i++;
-        j = i + 1;
-        min_indx = i;
-      }
-    } else {
-      notifySuccess();
-      clearInterval(mainInterval);
-    }
-  }, 300);
-}
-
-function partition(start, end) {
-  let i = start - 1;
-  let pivot = array[end];
-  let j = start;
-  console.log("partition starts", start, end);
-  return new Promise((res) => {
-    mainInterval = setInterval(() => {
-      [...graph_container.children].forEach((e, index) => {
-        index == start ? addClass(index, "start") : removeClass(index, "start");
-        index == end ? addClass(index, "end") : removeClass(index, "end");
-        index >= start && index <= end
-          ? changeColor(index, "#a18eff")
-          : changeColor(index, "#242424");
-        changeColor(end, "yellow");
-        changeColor(j, "#fffd8e");
-      });
-
-      console.log(i, j, array);
-      if (j <= end - 1) {
-        if (array[j] < pivot) {
-          i++;
-          swap(i, j);
-        }
-        j++;
-      } else {
-        console.log("end swap");
-        swap(i + 1, end);
-        clearInterval(mainInterval);
-        res(i + 1);
-      }
-    }, 100);
-  });
-}
-async function quickSort(left, right) {
-  if (left < right) {
-    let pi = await partition(left, right);
-    await quickSort(left, pi - 1);
-    await quickSort(pi + 1, right);
-    await new Promise((res) => {
-      [...graph_container.children].forEach((e, index) => {
-        removeClass(index, "start");
-        removeClass(index, "end");
-        changeColor(index, "#a18eff");
-      });
-      res("done");
-    });
-  }
-}
-
-async function merge(left, mid, right) {
-  [...graph_container.children].forEach((e, index) => {
-    index >= left && index <= right
-      ? changeColor(index, "#a18eff")
-      : changeColor(index, "#242424");
-  });
-
-  var n1 = mid - left + 1;
-  var n2 = right - mid;
-
-  var L = new Array(n1);
-  var R = new Array(n2);
-
-  for (var i = 0; i < n1; i++) L[i] = array[left + i];
-  for (var j = 0; j < n2; j++) R[j] = array[mid + 1 + j];
-
-  var i = 0;
-
-  var j = 0;
-
-  var k = left;
-
-  i = 0;
-  j = 0;
-  await new Promise((res) => {
-    mainInterval = setInterval(() => {
-      [...graph_container.children].forEach((e, index) => {
-        index >= left && index <= right
-          ? changeColor(index, "#a18eff")
-          : changeColor(index, "#242424");
-      });
-      console.log("main loop", i, j, array);
-      if (i < n1 && j < n2) {
-        if (L[i] < R[j]) {
-          array[k] = L[i];
-          console.log("i :", i);
-          changeColor(left + i, "#fffd8e");
-          elementAtIndex(
-            left + i
-          ).style.transform = `translateY(40vh) translateX(${k * factor}px)`;
-          elementAtIndex(left + i).dataset.temp = k;
-          i++;
-        } else {
-          array[k] = R[j];
-          console.log("j :", j);
-          changeColor(mid + 1 + j, "#fffd8e");
-          elementAtIndex(
-            mid + 1 + j
-          ).style.transform = `translateY(40vh) translateX(${k * factor}px)`;
-          elementAtIndex(mid + 1 + j).dataset.temp = k;
-          j++;
-        }
-
-        k++;
-      } else {
-        clearInterval(mainInterval);
-        res("done");
-      }
-    }, 100);
-  });
-
-  await new Promise((res) => {
-    mainInterval = setInterval(() => {
-      [...graph_container.children].forEach((e, index) => {
-        index >= left && index <= right
-          ? changeColor(index, "#a18eff")
-          : changeColor(index, "#242424");
-      });
-      console.log("left loop", i, j, array);
-      if (i < n1) {
-        console.log("i:", elementAtIndex(i));
-        array[k] = L[i];
-        changeColor(left + i, "#fffd8e");
-        elementAtIndex(
-          left + i
-        ).style.transform = `translateY(40vh) translateX(${k * factor}px)`;
-        elementAtIndex(left + i).dataset.temp = k;
-        i++;
-        k++;
-      } else {
-        clearInterval(mainInterval);
-        res("done");
-      }
-    }, 100);
-  });
-
-  await new Promise((res) => {
-    mainInterval = setInterval(() => {
-      [...graph_container.children].forEach((e, index) => {
-        index >= left && index <= right
-          ? changeColor(index, "#a18eff")
-          : changeColor(index, "#242424");
-      });
-      console.log("right loop", i, j, array);
-      if (j < n2) {
-        console.log("j:", elementAtIndex(j));
-        array[k] = R[j];
-        changeColor(mid + 1 + j, "#fffd8e");
-        elementAtIndex(
-          mid + 1 + j
-        ).style.transform = `translateY(40vh) translateX(${k * factor}px)`;
-        elementAtIndex(mid + 1 + j).dataset.temp = k;
-        j++;
-        k++;
-      } else {
-        clearInterval(mainInterval);
-        res("done");
-      }
-    }, 100);
-  });
-  resolveTemp();
-  [...graph_container.children].forEach((_, index) => {
-    changeColor(index, "#a18eff");
-  });
-}
-async function mergeSort(left, right) {
-  console.log(left, right);
-  if (left < right) {
-    await new Promise(async (res) => {
-      let m = Math.floor((left + right) / 2);
-      await mergeSort(left, m);
-      await mergeSort(m + 1, right);
-      await merge(left, m, right);
-      res("done");
-    });
-  }
-}
-
-function randomArray(length) {
-  // graph_container.style.width = `${numberOfElements * 30}px`;
-  // graph_container.style.height = `300px`;
-  clearInterval(mainInterval);
-  [...graph_container.children].forEach((e) => {
-    graph_container.removeChild(e);
-  });
-  array = new Array(length).fill(0);
-  array.forEach((_, index) => (array[index] = Math.floor(Math.random() * 100)));
-  drawBars();
-}
-
-toggleButton.addEventListener("click", () => {
-  if (isOpen) {
-    closeMenu();
-  } else {
-    openMenu();
-  }
-});
-
-randomButton.addEventListener("click", () => {
-  randomArray(numberOfElements);
-});
-runButton.addEventListener("click", async () => {
-  let algo = new FormData(form).get("algo");
-
-  switch (algo) {
-    case "insertion":
-      insertionSort();
-      break;
-    case "bubble":
-      bubbleSort();
-      break;
-    case "selection":
-      selectionSort();
-      break;
-    case "quick":
-      setDesc("quick");
-      await quickSort(0, array.length - 1);
-      notifySuccess();
-      break;
-    case "merge":
-      setDesc("merge");
-      graph_container.style.transform = "translateY(-100px)";
-      await mergeSort(0, array.length - 1);
-      [...graph_container.children].forEach((e) => {
-        e.style.transform = `translateX(${e.dataset.pos * factor}px)`;
-      });
-      notifySuccess();
-      graph_container.style.transform = "translateY(0px)";
-      break;
-  }
-});
+    The time complexity of merge sort is O(n log n) in all cases. This is because the algorithm always splits the array in half, and the merging step takes a constant amount of time.`,
+    time: "O(n log n)",
+    space: "O(n)",
+  },
+};
